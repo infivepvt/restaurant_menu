@@ -815,7 +815,7 @@ if ($filtered_category) {
                 <?php endif; ?>
             <?php endforeach; ?>
         <?php endif; ?>
-        <a href="admin_restaurant.php" class="admin-link">Manage Restaurant Info</a>
+        
     </div>
 
     <!-- Service Modal -->
