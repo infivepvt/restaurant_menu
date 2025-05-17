@@ -1,7 +1,12 @@
 <?php
 require 'config.php';
-$offer_stmt = $pdo->query("SELECT * FROM offer_banners WHERE is_active = 1 ORDER BY display_order ASC, created_at DESC LIMIT 1");
 
+// Fetch restaurant info
+$restaurant_stmt = $pdo->query("SELECT name, logo_path FROM restaurant_info LIMIT 1");
+$restaurant = $restaurant_stmt->fetch(PDO::FETCH_ASSOC);
+
+// Fetch active offer banner
+$offer_stmt = $pdo->query("SELECT * FROM offer_banners WHERE is_active = 1 ORDER BY display_order ASC, created_at DESC LIMIT 1");
 $offer_banner = $offer_stmt->fetch();
 
 // Get all categories with their services
@@ -68,9 +73,10 @@ if ($filtered_category) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services</title>
+    <title><?= htmlspecialchars($restaurant['name'] ?? 'Our Services') ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="assets/image/Logo1.ico">
+    <link rel="icon" type="image/x-icon"
+        href="<?= htmlspecialchars($restaurant['logo_path'] ?? 'assets/image/Logo1.ico') ?>">
     <style>
         :root {
             --primary: #ff6b6b;
@@ -106,6 +112,38 @@ if ($filtered_category) {
             background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
             margin-bottom: 30px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .restaurant-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px 0;
+        }
+
+        .restaurant-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+        }
+
+        .restaurant-logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+        }
+
+        .restaurant-logo-placeholder i {
+            font-size: 2.5rem;
+            color: var(--dark);
         }
 
         h1 {
@@ -201,7 +239,7 @@ if ($filtered_category) {
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Increased min width for larger images */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
         }
 
@@ -225,7 +263,7 @@ if ($filtered_category) {
         }
 
         .service-image-container {
-            width: 120px; /* Increased image size */
+            width: 120px;
             height: 120px;
             overflow: hidden;
             margin-right: 15px;
@@ -250,7 +288,7 @@ if ($filtered_category) {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 120px; /* Adjusted for larger image */
+            min-height: 120px;
         }
 
         .service-title {
@@ -290,7 +328,6 @@ if ($filtered_category) {
             grid-column: 1 / -1;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -306,7 +343,7 @@ if ($filtered_category) {
         }
 
         .modal-content {
-            background: linear-gradient(135deg, var(--darker) 0%, #1e2a44 100%); /* Gradient background */
+            background: linear-gradient(135deg, var(--darker) 0%, #1e2a44 100%);
             margin: 50px auto;
             max-width: 800px;
             border-radius: 12px;
@@ -321,6 +358,7 @@ if ($filtered_category) {
                 opacity: 0;
                 transform: translateY(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -407,107 +445,6 @@ if ($filtered_category) {
             font-weight: 500;
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .category-filter {
-                justify-content: center;
-            }
-
-            .services-grid {
-                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Adjusted for larger images */
-                gap: 15px;
-            }
-
-            .category-title {
-                font-size: 1.5rem;
-            }
-
-            .category-image {
-                width: 60px;
-                height: 60px;
-            }
-
-            .modal-content {
-                margin: 20px auto;
-            }
-
-            .modal-header {
-                height: 200px;
-            }
-
-            .modal-body {
-                padding: 25px;
-            }
-
-            .service-card {
-                padding: 10px;
-            }
-
-            .service-image-container {
-                width: 100px; /* Scaled down for tablets */
-                height: 100px;
-            }
-
-            .service-content {
-                min-height: 100px;
-            }
-
-            .modal-title {
-                font-size: 1.8rem;
-            }
-
-            .modal-price {
-                font-size: 1.4rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .category-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .category-image {
-                margin-right: 0;
-                margin-bottom: 15px;
-                width: 80px;
-                height: 80px;
-            }
-
-            .filter-option {
-                padding: 8px 16px;
-                font-size: 0.85rem;
-            }
-
-            .modal-header {
-                height: 150px;
-            }
-
-            .service-image-container {
-                width: 80px; /* Scaled down for mobile */
-                height: 80px;
-            }
-
-            .service-content {
-                min-height: 80px;
-            }
-
-            .modal-title {
-                font-size: 1.6rem;
-            }
-
-            .modal-price {
-                font-size: 1.3rem;
-            }
-        }
-
         .offer-banner {
             position: relative;
             height: 300px;
@@ -563,6 +500,67 @@ if ($filtered_category) {
         }
 
         @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .restaurant-logo,
+            .restaurant-logo-placeholder {
+                width: 60px;
+                height: 60px;
+            }
+
+            .category-filter {
+                justify-content: center;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 15px;
+            }
+
+            .category-title {
+                font-size: 1.5rem;
+            }
+
+            .category-image {
+                width: 60px;
+                height: 60px;
+            }
+
+            .modal-content {
+                margin: 20px auto;
+            }
+
+            .modal-header {
+                height: 200px;
+            }
+
+            .modal-body {
+                padding: 25px;
+            }
+
+            .service-card {
+                padding: 10px;
+            }
+
+            .service-image-container {
+                width: 100px;
+                height: 100px;
+            }
+
+            .service-content {
+                min-height: 100px;
+            }
+
+            .modal-title {
+                font-size: 1.8rem;
+            }
+
+            .modal-price {
+                font-size: 1.4rem;
+            }
+
             .offer-banner {
                 height: 250px;
                 margin: 0 15px;
@@ -570,31 +568,179 @@ if ($filtered_category) {
         }
 
         @media (max-width: 480px) {
+            .restaurant-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .restaurant-logo,
+            .restaurant-logo-placeholder {
+                margin-bottom: 15px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .category-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 80px;
+                height: 80px;
+            }
+
+            .filter-option {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .modal-header {
+                height: 150px;
+            }
+
+            .service-image-container {
+                width: 80px;
+                height: 80px;
+            }
+
+            .service-content {
+                min-height: 80px;
+            }
+
+            .modal-title {
+                font-size: 1.6rem;
+            }
+
+            .modal-price {
+                font-size: 1.3rem;
+            }
+
             .offer-banner {
                 height: 200px;
+            }
+        }
+
+        .restaurant-info {
+            display: flex;
+            flex-direction: column;
+            /* Stack name above logo */
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px 0;
+        }
+
+        .restaurant-logo {
+            width: 120px;
+            /* Increased size */
+            height: 120px;
+            /* Increased size */
+            object-fit: contain;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+        }
+
+        .restaurant-logo-placeholder {
+            width: 120px;
+            /* Increased size */
+            height: 120px;
+            /* Increased size */
+            background-color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+        }
+
+        .restaurant-logo-placeholder i {
+            font-size: 3.5rem;
+            /* Increased icon size for placeholder */
+            color: var(--dark);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            /* Ensure text is centered */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+
+            .restaurant-logo,
+            .restaurant-logo-placeholder {
+                width: 150px;
+                /* Slightly smaller for tablets */
+                height: 150px;
+            }
+
+            .restaurant-logo-placeholder i {
+                font-size: 3rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .restaurant-logo,
+            .restaurant-logo-placeholder {
+                width: 150px;
+                /* Smaller for mobile */
+                height: 150px;
+            }
+
+            .restaurant-logo-placeholder i {
+                font-size: 2.5rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Our Services</h1>
-    </div>
-    <?php
-    // Get active banners in display order
-    $banners = $pdo->query("SELECT * FROM offer_banners WHERE is_active = 1 ORDER BY display_order")->fetchAll();
-
-    if (!empty($banners)): ?>
-        <div class="offer-banner">
-            <?php foreach ($banners as $index => $banner): ?>
-                <img src="<?= htmlspecialchars($banner['image_path']) ?>" alt="Special Offer"
-                    class="<?= $index === 0 ? 'active' : '' ?>">
-            <?php endforeach; ?>
-            <button class="banner-nav left"><i class="fas fa-chevron-left"></i></button>
-            <button class="banner-nav right"><i class="fas fa-chevron-right"></i></button>
+    <header>
+        <div class="container">
+            <div class="restaurant-info">
+                <h1><?= htmlspecialchars($restaurant['name'] ?? 'Our Services') ?></h1>
+                <?php if ($restaurant && $restaurant['logo_path']): ?>
+                    <img src="<?= htmlspecialchars(str_replace('../', '/', $restaurant['logo_path'])) ?>"
+                        alt="Restaurant Logo" class="restaurant-logo">
+                <?php else: ?>
+                    <div class="restaurant-logo-placeholder">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
-    <?php endif; ?>
+        <?php
+        // Get active banners in display order
+        $banners = $pdo->query("SELECT * FROM offer_banners WHERE is_active = 1 ORDER BY display_order")->fetchAll();
+        if (!empty($banners)): ?>
+            <div class="offer-banner">
+                <?php foreach ($banners as $index => $banner): ?>
+                    <img src="<?= htmlspecialchars($banner['image_path']) ?>" alt="Special Offer"
+                        class="<?= $index === 0 ? 'active' : '' ?>">
+                <?php endforeach; ?>
+                <button class="banner-nav left"><i class="fas fa-chevron-left"></i></button>
+                <button class="banner-nav right"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        <?php endif; ?>
     </header>
 
     <div class="container">
@@ -644,15 +790,16 @@ if ($filtered_category) {
                                     '<?= htmlspecialchars($service['image'] ? $service['image'] : '', ENT_QUOTES) ?>',
                                     '<?= htmlspecialchars($service['price']) ?>',
                                     '<?= htmlspecialchars($service['description'], ENT_QUOTES) ?>',
-                                    '<?= htmlspecialchars($service['description'], ENT_QUOTES) ?>', // Using description twice since detailed_description doesn't exist
+                                    '<?= htmlspecialchars($service['description'], ENT_QUOTES) ?>',
                                     '<?= htmlspecialchars($category['name'], ENT_QUOTES) ?>'
                                 )">
                                     <div class="service-image-container">
                                         <?php if ($service['image']): ?>
                                             <img src="<?= htmlspecialchars($service['image']) ?>"
-                                                 alt="<?= htmlspecialchars($service['name']) ?>" class="service-image">
+                                                alt="<?= htmlspecialchars($service['name']) ?>" class="service-image">
                                         <?php else: ?>
-                                            <div style="background-color:var(--gray);height:100%;display:flex;align-items:center;justify-content:center;">
+                                            <div
+                                                style="background-color:var(--gray);height:100%;display:flex;align-items:center;justify-content:center;">
                                                 <i class="fas fa-image" style="font-size:2.5rem;color:var(--dark);"></i>
                                             </div>
                                         <?php endif; ?>
@@ -668,6 +815,7 @@ if ($filtered_category) {
                 <?php endif; ?>
             <?php endforeach; ?>
         <?php endif; ?>
+        <a href="admin_restaurant.php" class="admin-link">Manage Restaurant Info</a>
     </div>
 
     <!-- Service Modal -->
@@ -698,14 +846,12 @@ if ($filtered_category) {
             const modalDetailedDescription = document.getElementById('modalDetailedDescription');
             const modalCategory = document.getElementById('modalCategory');
 
-            // Set modal content
             modalTitle.textContent = name;
             modalPrice.textContent = 'Rs. ' + parseFloat(price).toFixed(2);
             modalDescription.textContent = description;
             modalDetailedDescription.textContent = detailedDescription || description;
             modalCategory.textContent = category;
 
-            // Set image or placeholder
             if (image) {
                 modalImage.src = image;
                 modalImage.style.display = 'block';
@@ -721,7 +867,6 @@ if ($filtered_category) {
                 `;
             }
 
-            // Show modal
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
@@ -732,7 +877,6 @@ if ($filtered_category) {
             document.body.style.overflow = 'auto';
         }
 
-        // Close modal when clicking outside
         window.onclick = function (event) {
             const modal = document.getElementById('serviceModal');
             if (event.target == modal) {
@@ -740,7 +884,6 @@ if ($filtered_category) {
             }
         }
 
-        // Close modal with ESC key
         document.addEventListener('keydown', function (event) {
             const modal = document.getElementById('serviceModal');
             if (event.key === 'Escape' && modal.style.display === 'block') {
@@ -765,11 +908,10 @@ if ($filtered_category) {
             function startAutoSlide() {
                 interval = setInterval(() => {
                     showBanner(current + 1);
-                }, 5000); // Change slide every 5 seconds
+                }, 5000);
             }
 
             if (banners.length > 0) {
-                // Show first banner (already has 'active' class from PHP)
                 startAutoSlide();
 
                 leftBtn.addEventListener('click', () => {
@@ -784,7 +926,6 @@ if ($filtered_category) {
                     startAutoSlide();
                 });
 
-                // Pause on hover
                 const bannerContainer = document.querySelector('.offer-banner');
                 bannerContainer.addEventListener('mouseenter', () => {
                     clearInterval(interval);
