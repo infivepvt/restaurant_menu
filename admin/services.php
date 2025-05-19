@@ -58,7 +58,7 @@ $services = $pdo->query("
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services - Restaurant Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="assets/image/Logo1.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/image/Logo1.ico">
     <style>
         :root {
             --primary-color: #c8102e;
