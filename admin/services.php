@@ -58,7 +58,7 @@ $services = $pdo->query("
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services - Restaurant Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="../assets/image/Logo1.ico">
+    <link rel="icon" type="image/x-icon" href="assets/image/Logo1.ico">
     <style>
         :root {
             --primary-color: #c8102e;
@@ -557,6 +557,7 @@ $services = $pdo->query("
                 <a href="add_category.php"><i class="fas fa-plus-circle"></i>Add Category</a>
                 <a href="add_service.php"><i class="fas fa-plus-square"></i>Add Service</a>
                 <a href="offer.php"><i class="fas fa-images"></i>Offer Images</a>
+                <a href="admin_restaurant.php"><i class="fas fa-images"></i>Restaurant Logo & Name</a>
             </nav>
 
             <main>
