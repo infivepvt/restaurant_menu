@@ -68,12 +68,14 @@ if ($filtered_category) {
 
 <!DOCTYPE html>
 <html lang="si">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($restaurant['name'] ?? 'Our Services') ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="<?= htmlspecialchars($restaurant['logo_path'] ?? 'assets/image/Logo1.ico') ?>">
+    <link rel="icon" type="image/x-icon"
+        href="<?= htmlspecialchars($restaurant['logo_path'] ?? 'assets/image/Logo1.ico') ?>">
     <style>
         :root {
             --primary: #ff6b6b;
@@ -123,11 +125,11 @@ if ($filtered_category) {
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 2px;
         }
 
         header {
-            text-align: center;          
+            text-align: center;
             margin-bottom: 20px;
             border-bottom: 1px solid;
         }
@@ -209,6 +211,132 @@ if ($filtered_category) {
 
         .light-mode h1 {
             color: var(--primary);
+        }
+
+        /* Updated Search Bar Styles */
+        .search-container {
+            position: relative;
+            margin-bottom: 10px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background-color: var(--card-light);
+            border-radius: 25px;
+            padding: 5px 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .search-input-wrapper {
+            background-color: var(--card-dark);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+        }
+
+        .search-input-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 40px; /* Adjusted for icons */
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            background: transparent;
+        }
+
+        .dark-mode .search-input {
+            color: var(--light);
+        }
+
+        .light-mode .search-input {
+            color: var(--text-dark);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-light);
+            opacity: 0.7;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            color: var(--gray-light);
+            font-size: 1.1rem;
+        }
+
+        .search-loading {
+            position: absolute;
+            right: 15px;
+            color: var(--primary);
+            font-size: 1.1rem;
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--card-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .dark-mode .search-suggestions {
+            background-color: var(--card-dark);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+        }
+
+        .search-suggestions ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .search-suggestions li {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-suggestions li:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .search-suggestions li i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .dark-mode .search-suggestions li {
+            color: var(--light);
+        }
+
+        .light-mode .search-suggestions li {
+            color: var(--text-dark);
         }
 
         .tab {
@@ -501,8 +629,15 @@ if ($filtered_category) {
         }
 
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-header {
@@ -664,9 +799,17 @@ if ($filtered_category) {
             transition: background-color 0.3s ease;
         }
 
-        .banner-nav.left { left: 10px; }
-        .banner-nav.right { right: 10px; }
-        .banner-nav:hover { background-color: var(--primary); }
+        .banner-nav.left {
+            left: 10px;
+        }
+
+        .banner-nav.right {
+            right: 10px;
+        }
+
+        .banner-nav:hover {
+            background-color: var(--primary);
+        }
 
         /* Theme Toggle */
         .theme-toggle {
@@ -695,42 +838,176 @@ if ($filtered_category) {
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 1.6rem; }
-            .restaurant-info { padding: 15px 0; flex-direction: row; justify-content: space-between; }
-            .restaurant-logo, .restaurant-logo-placeholder { width: 80px; height: 80px; border-radius: 50%; }
-            .restaurant-logo-placeholder i { font-size: 2rem; }
-            .services-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
-            .category-title { font-size: 1.5rem; }
-            .category-image { width: 60px; height: 60px; }
-            .modal-content { margin: 20px auto; }
-            .modal-header { height: 200px; }
-            .modal-body { padding: 25px; }
-            .service-card { padding: 10px; }
-            .service-image-container { width: 100px; height: 100px; }
-            .service-content { min-height: 100px; }
-            .modal-title { font-size: 1.8rem; }
-            .modal-price { font-size: 1.4rem; }
-            .offer-banner { height: 250px; margin: 0 15px; }
-            .tab { flex-wrap: nowrap; justify-content: flex-start; padding: 10px; }
-            .tablinks { padding: 8px 12px; font-size: 0.9rem; }
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .restaurant-info {
+                padding: 15px 0;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .restaurant-logo,
+            .restaurant-logo-placeholder {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+            }
+
+            .restaurant-logo-placeholder i {
+                font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 15px;
+            }
+
+            .category-title {
+                font-size: 1.5rem;
+            }
+
+            .category-image {
+                width: 60px;
+                height: 60px;
+            }
+
+            .modal-content {
+                margin: 20px auto;
+            }
+
+            .modal-header {
+                height: 200px;
+            }
+
+            .modal-body {
+                padding: 25px;
+            }
+
+            .service-card {
+                padding: 10px;
+            }
+
+            .service-image-container {
+                width: 100px;
+                height: 100px;
+            }
+
+            .service-content {
+                min-height: 100px;
+            }
+
+            .modal-title {
+                font-size: 1.8rem;
+            }
+
+            .modal-price {
+                font-size: 1.4rem;
+            }
+
+            .offer-banner {
+                height: 250px;
+                margin: 0 15px;
+            }
+
+            .tab {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                padding: 10px;
+            }
+
+            .tablinks {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .search-input {
+                padding: 8px 35px 8px 35px;
+                font-size: 0.95rem;
+            }
+
+            .search-icon,
+            .search-loading {
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
-            .restaurant-info { flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 0; }
-            .restaurant-logo, .restaurant-logo-placeholder { width: 60px; height: 60px; border-radius: 50%; }
-            .restaurant-logo-placeholder i { font-size: 1.6rem; }
-            h1 { font-size: 1.4rem; text-align: left; }
-            .services-grid { grid-template-columns: 1fr; }
-            .category-header { flex-direction: column; text-align: center; }
-            .category-image { margin-right: 0; margin-bottom: 15px; width: 80px; height: 80px; }
-            .modal-header { height: 150px; }
-            .service-image-container { width: 80px; height: 80px; }
-            .service-content { min-height: 80px; }
-            .modal-title { font-size: 1.6rem; }
-            .modal-price { font-size: 1.3rem; }
-            .offer-banner { height: 200px; }
-            .tablinks { padding: 6px 10px; font-size: 0.85rem; }
-            .tablinks img, .tablinks i { margin-right: 6px; }
+            .restaurant-info {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 0;
+            }
+
+            .restaurant-logo,
+            .restaurant-logo-placeholder {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+
+            .restaurant-logo-placeholder i {
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                text-align: left;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .category-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 80px;
+                height: 80px;
+            }
+
+            .modal-header {
+                height: 150px;
+            }
+
+            .service-image-container {
+                width: 80px;
+                height: 80px;
+            }
+
+            .service-content {
+                min-height: 80px;
+            }
+
+            .modal-title {
+                font-size: 1.6rem;
+            }
+
+            .modal-price {
+                font-size: 1.3rem;
+            }
+
+            .offer-banner {
+                height: 200px;
+            }
+
+            .tablinks {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+            .tablinks img,
+            .tablinks i {
+                margin-right: 6px;
+            }
+
             .theme-toggle {
                 width: 40px;
                 height: 40px;
@@ -738,9 +1015,24 @@ if ($filtered_category) {
                 bottom: 15px;
                 right: 15px;
             }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .search-input {
+                padding: 8px 30px 8px 30px;
+                font-size: 0.9rem;
+            }
+
+            .search-icon,
+            .search-loading {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
+
 <body class="dark-mode">
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
@@ -751,7 +1043,8 @@ if ($filtered_category) {
             <div class="restaurant-info">
                 <div class="logo-container">
                     <?php if ($restaurant && $restaurant['logo_path']): ?>
-                        <img src="<?= htmlspecialchars(str_replace('../', '/', $restaurant['logo_path'])) ?>" alt="Restaurant Logo" class="restaurant-logo">
+                        <img src="<?= htmlspecialchars(str_replace('../', '/', $restaurant['logo_path'])) ?>"
+                            alt="Restaurant Logo" class="restaurant-logo">
                     <?php else: ?>
                         <div class="restaurant-logo-placeholder">
                             <i class="fas fa-utensils"></i>
@@ -764,7 +1057,8 @@ if ($filtered_category) {
         <?php if (!empty($banners)): ?>
             <div class="offer-banner">
                 <?php foreach ($banners as $index => $banner): ?>
-                    <img src="<?= htmlspecialchars($banner['image_path']) ?>" alt="Special Offer" class="<?= $index === 0 ? 'active' : '' ?>">
+                    <img src="<?= htmlspecialchars($banner['image_path']) ?>" alt="Special Offer"
+                        class="<?= $index === 0 ? 'active' : '' ?>">
                 <?php endforeach; ?>
                 <button class="banner-nav left"><i class="fas fa-chevron-left"></i></button>
                 <button class="banner-nav right"><i class="fas fa-chevron-right"></i></button>
@@ -773,11 +1067,26 @@ if ($filtered_category) {
     </header>
 
     <div class="container">
+        <!-- Updated Search Bar -->
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" class="search-input"
+                    placeholder="Search by category or service name...">
+                <i class="fas fa-spinner search-loading"></i>
+            </div>
+            <div class="search-suggestions" id="searchSuggestions">
+                <ul id="suggestionsList"></ul>
+            </div>
+        </div>
+
         <!-- Tabbed Interface -->
         <div class="tab">
-            <button class="tablinks <?= $filtered_category === null ? 'active' : '' ?>" onclick="openCategory(event, 'all')">All Categories</button>
+            <button class="tablinks <?= $filtered_category === null ? 'active' : '' ?>"
+                onclick="openCategory(event, 'all')">All Categories</button>
             <?php foreach ($categories as $category): ?>
-                <button class="tablinks <?= $filtered_category == $category['id'] ? 'active' : '' ?>" onclick="openCategory(event, 'category-<?= $category['id'] ?>')">
+                <button class="tablinks <?= $filtered_category == $category['id'] ? 'active' : '' ?>"
+                    onclick="openCategory(event, 'category-<?= $category['id'] ?>')">
                     <?php if ($category['image']): ?>
                         <img src="<?= htmlspecialchars($category['image']) ?>" alt="<?= htmlspecialchars($category['name']) ?>">
                     <?php else: ?>
@@ -795,7 +1104,8 @@ if ($filtered_category) {
                     <div class="category-section">
                         <div class="category-header">
                             <?php if ($category['image']): ?>
-                                <img src="<?= htmlspecialchars($category['image']) ?>" alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
+                                <img src="<?= htmlspecialchars($category['image']) ?>"
+                                    alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
                             <?php else: ?>
                                 <div class="category-image" style="display:flex;align-items:center;justify-content:center;">
                                     <i class="fas fa-folder" style="font-size:2rem;"></i>
@@ -805,15 +1115,15 @@ if ($filtered_category) {
                         </div>
                         <div class="services-grid">
                             <?php foreach ($category['services'] as $service): ?>
-                                <div class="service-card" 
-                                     data-service-name="<?= htmlspecialchars($service['name'], ENT_QUOTES) ?>" 
-                                     data-service-image="<?= htmlspecialchars($service['image'] ?? '', ENT_QUOTES) ?>" 
-                                     data-service-price="<?= htmlspecialchars($service['price']) ?>" 
-                                     data-service-description="<?= htmlspecialchars($service['description'], ENT_QUOTES) ?>" 
-                                     data-service-category="<?= htmlspecialchars($category['name'], ENT_QUOTES) ?>">
+                                <div class="service-card" data-service-name="<?= htmlspecialchars($service['name'], ENT_QUOTES) ?>"
+                                    data-service-image="<?= htmlspecialchars($service['image'] ?? '', ENT_QUOTES) ?>"
+                                    data-service-price="<?= htmlspecialchars($service['price']) ?>"
+                                    data-service-description="<?= htmlspecialchars($service['description'], ENT_QUOTES) ?>"
+                                    data-service-category="<?= htmlspecialchars($category['name'], ENT_QUOTES) ?>">
                                     <div class="service-image-container">
                                         <?php if ($service['image']): ?>
-                                            <img src="<?= htmlspecialchars($service['image']) ?>" alt="<?= htmlspecialchars($service['name']) ?>" class="service-image">
+                                            <img src="<?= htmlspecialchars($service['image']) ?>"
+                                                alt="<?= htmlspecialchars($service['name']) ?>" class="service-image">
                                         <?php else: ?>
                                             <div style="height:100%;display:flex;align-items:center;justify-content:center;">
                                                 <i class="fas fa-image" style="font-size:2.5rem;"></i>
@@ -844,7 +1154,8 @@ if ($filtered_category) {
                     <div class="category-section">
                         <div class="category-header">
                             <?php if ($category['image']): ?>
-                                <img src="<?= htmlspecialchars($category['image']) ?>" alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
+                                <img src="<?= htmlspecialchars($category['image']) ?>"
+                                    alt="<?= htmlspecialchars($category['name']) ?>" class="category-image">
                             <?php else: ?>
                                 <div class="category-image" style="display:flex;align-items:center;justify-content:center;">
                                     <i class="fas fa-folder" style="font-size:2rem;"></i>
@@ -854,15 +1165,15 @@ if ($filtered_category) {
                         </div>
                         <div class="services-grid">
                             <?php foreach ($category['services'] as $service): ?>
-                                <div class="service-card" 
-                                     data-service-name="<?= htmlspecialchars($service['name'], ENT_QUOTES) ?>" 
-                                     data-service-image="<?= htmlspecialchars($service['image'] ?? '', ENT_QUOTES) ?>" 
-                                     data-service-price="<?= htmlspecialchars($service['price']) ?>" 
-                                     data-service-description="<?= htmlspecialchars($service['description'], ENT_QUOTES) ?>" 
-                                     data-service-category="<?= htmlspecialchars($category['name'], ENT_QUOTES) ?>">
+                                <div class="service-card" data-service-name="<?= htmlspecialchars($service['name'], ENT_QUOTES) ?>"
+                                    data-service-image="<?= htmlspecialchars($service['image'] ?? '', ENT_QUOTES) ?>"
+                                    data-service-price="<?= htmlspecialchars($service['price']) ?>"
+                                    data-service-description="<?= htmlspecialchars($service['description'], ENT_QUOTES) ?>"
+                                    data-service-category="<?= htmlspecialchars($category['name'], ENT_QUOTES) ?>">
                                     <div class="service-image-container">
                                         <?php if ($service['image']): ?>
-                                            <img src="<?= htmlspecialchars($service['image']) ?>" alt="<?= htmlspecialchars($service['name']) ?>" class="service-image">
+                                            <img src="<?= htmlspecialchars($service['image']) ?>"
+                                                alt="<?= htmlspecialchars($service['name']) ?>" class="service-image">
                                         <?php else: ?>
                                             <div style="height:100%;display:flex;align-items:center;justify-content:center;">
                                                 <i class="fas fa-image" style="font-size:2.5rem;"></i>
@@ -885,6 +1196,11 @@ if ($filtered_category) {
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
+
+        <!-- Search Results -->
+        <div id="searchResults" class="tabcontent" style="display: none;">
+            <div id="searchResultsContent"></div>
+        </div>
     </div>
 
     <!-- Service Modal -->
@@ -952,6 +1268,11 @@ if ($filtered_category) {
             targetTab.style.display = "block";
             targetTab.classList.add("active");
             evt.currentTarget.classList.add("active");
+
+            // Hide search results and suggestions when a category is selected
+            document.getElementById('searchResults').style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchSuggestions').style.display = 'none';
         }
 
         // Modal Functions
@@ -1010,6 +1331,187 @@ if ($filtered_category) {
             document.body.style.overflow = 'auto';
         }
 
+        // Search Functionality
+        const categoriesData = <?php echo json_encode($categories); ?>;
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        const suggestionsList = document.getElementById('suggestionsList');
+        const searchLoading = document.querySelector('.search-loading');
+
+        function searchServices() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const searchResultsContent = document.getElementById('searchResultsContent');
+            const searchResultsTab = document.getElementById('searchResults');
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            const tablinks = document.getElementsByClassName("tablinks");
+
+            // Show loading spinner
+            searchLoading.style.display = 'block';
+
+            // Simulate search delay for better UX
+            setTimeout(() => {
+                // Hide loading spinner
+                searchLoading.style.display = 'none';
+
+                // Hide all tab content and remove active class from tablinks
+                for (let i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                    tabcontent[i].classList.remove("active");
+                }
+                for (let i = 0; i < tablinks.length; i++) {
+                    tablinks[i].classList.remove("active");
+                }
+
+                // If search input is empty, show the default "All" tab
+                if (!searchTerm) {
+                    document.getElementById('all').style.display = 'block';
+                    document.getElementById('all').classList.add('active');
+                    document.querySelector('.tablinks[onclick*="all"]').classList.add('active');
+                    searchResultsTab.style.display = 'none';
+                    searchSuggestions.style.display = 'none';
+                    return;
+                }
+
+                // Show search results tab
+                searchResultsTab.style.display = 'block';
+                searchResultsTab.classList.add("active");
+
+                // Filter categories and services
+                let filteredCategories = {};
+                for (const catId in categoriesData) {
+                    const category = categoriesData[catId];
+                    const matchesCategory = category.name.toLowerCase().includes(searchTerm);
+                    const filteredServices = category.services.filter(service =>
+                        service.name.toLowerCase().includes(searchTerm) ||
+                        (service.description && service.description.toLowerCase().includes(searchTerm))
+                    );
+
+                    if (matchesCategory || filteredServices.length > 0) {
+                        filteredCategories[catId] = {
+                            ...category,
+                            services: matchesCategory ? category.services : filteredServices
+                        };
+                    }
+                }
+
+                // Generate HTML for search results
+                let html = '';
+                if (Object.keys(filteredCategories).length === 0) {
+                    html = `
+                        <div class="no-services">
+                            <i class="fas fa-box-open" style="font-size:2rem;margin-bottom:15px;"></i>
+                            <p>No services or categories found matching "${searchTerm}"</p>
+                        </div>
+                    `;
+                } else {
+                    for (const catId in filteredCategories) {
+                        const category = filteredCategories[catId];
+                        if (category.services.length > 0) {
+                            html += `
+                                <div class="category-section">
+                                    <div class="category-header">
+                                        ${category.image ?
+                                            `<img src="${category.image}" alt="${category.name}" class="category-image">` :
+                                            `<div class="category-image" style="display:flex;align-items:center;justify-content:center;">
+                                                <i class="fas fa-folder" style="font-size:2rem;"></i>
+                                            </div>`
+                                        }
+                                        <h2 class="category-title">${category.name}</h2>
+                                    </div>
+                                    <div class="services-grid">
+                            `;
+                            category.services.forEach(service => {
+                                html += `
+                                    <div class="service-card" 
+                                         data-service-name="${service.name.replace(/"/g, '&quot;')}" 
+                                         data-service-image="${service.image ? service.image.replace(/"/g, '&quot;') : ''}" 
+                                         data-service-price="${service.price}" 
+                                         data-service-description="${service.description ? service.description.replace(/"/g, '&quot;') : ''}" 
+                                         data-service-category="${category.name.replace(/"/g, '&quot;')}">
+                                        <div class="service-image-container">
+                                            ${service.image ?
+                                                `<img src="${service.image}" alt="${service.name}" class="service-image">` :
+                                                `<div style="height:100%;display:flex;align-items:center;justify-content:center;">
+                                                    <i class="fas fa-image" style="font-size:2.5rem;"></i>
+                                                </div>`
+                                            }
+                                        </div>
+                                        <div class="service-content">
+                                            <h3 class="service-title">${service.name}</h3>
+                                            <div class="service-price">Rs. ${parseFloat(service.price).toFixed(2)}</div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            html += `</div></div>`;
+                        }
+                    }
+                }
+
+                searchResultsContent.innerHTML = html;
+
+                // Add event listeners to new service cards
+                document.querySelectorAll('#searchResults .service-card').forEach(card => {
+                    card.addEventListener('click', function () {
+                        const name = this.dataset.serviceName;
+                        const image = this.dataset.serviceImage;
+                        const price = this.dataset.servicePrice;
+                        const description = this.dataset.serviceDescription;
+                        const category = this.dataset.serviceCategory;
+                        openServiceModal(name, image, price, description, category);
+                    });
+                });
+            }, 300); // Simulated delay
+        }
+
+        // Search Suggestions Functionality
+        function showSuggestions() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            suggestionsList.innerHTML = '';
+
+            if (!searchTerm) {
+                searchSuggestions.style.display = 'none';
+                return;
+            }
+
+            let suggestions = [];
+            for (const catId in categoriesData) {
+                const category = categoriesData[catId];
+                if (category.name.toLowerCase().includes(searchTerm)) {
+                    suggestions.push({ type: 'category', name: category.name, id: catId });
+                }
+                category.services.forEach(service => {
+                    if (service.name.toLowerCase().includes(searchTerm) ||
+                        (service.description && service.description.toLowerCase().includes(searchTerm))) {
+                        suggestions.push({ type: 'service', name: service.name, category: category.name, ...service });
+                    }
+                });
+            }
+
+            if (suggestions.length > 0) {
+                suggestions.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <i class="fas fa-${item.type === 'category' ? 'folder' : 'utensils'}"></i>
+                        ${item.name} ${item.type === 'service' ? `<span style="color: var(--gray-light); font-size: 0.9rem;">(in ${item.category})</span>` : ''}
+                    `;
+                    li.addEventListener('click', () => {
+                        searchInput.value = item.name;
+                        searchSuggestions.style.display = 'none';
+                        if (item.type === 'category') {
+                            openCategory({ currentTarget: document.querySelector(`.tablinks[onclick*="category-${item.id}"]`) }, `category-${item.id}`);
+                        } else {
+                            searchServices();
+                        }
+                    });
+                    suggestionsList.appendChild(li);
+                });
+                searchSuggestions.style.display = 'block';
+            } else {
+                searchSuggestions.style.display = 'none';
+            }
+        }
+
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function () {
             // Service Card Clicks
@@ -1022,6 +1524,22 @@ if ($filtered_category) {
                     const category = this.dataset.serviceCategory;
                     openServiceModal(name, image, price, description, category);
                 });
+            });
+
+            // Search Input Events
+            searchInput.addEventListener('input', showSuggestions);
+            searchInput.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    searchSuggestions.style.display = 'none';
+                    searchServices();
+                }
+            });
+
+            // Close suggestions when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!searchContainer.contains(event.target)) {
+                    searchSuggestions.style.display = 'none';
+                }
             });
 
             // Banner Slider
@@ -1086,4 +1604,5 @@ if ($filtered_category) {
         });
     </script>
 </body>
+
 </html>
