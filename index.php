@@ -127,9 +127,8 @@ if ($filtered_category) {
         }
 
         header {
-            text-align: center;
-            padding: 40px 0;
-            margin-bottom: 30px;
+            text-align: center;          
+            margin-bottom: 20px;
             border-bottom: 1px solid;
         }
 
