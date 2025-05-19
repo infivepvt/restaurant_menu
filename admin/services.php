@@ -173,12 +173,12 @@ $services = $pdo->query("
         h1 {
             color: white;
             font-size: 1.8rem;
-           
+
         }
 
         h2 {
             margin-top: 0;
-            color: var(--primary-dark);
+            color: var(--gradient-mid);
             font-weight: 600;
             font-size: 1.5rem;
             margin-bottom: 1.5rem;
@@ -206,7 +206,8 @@ $services = $pdo->query("
             min-width: 600px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 15px;
             border-bottom: 1px solid #e0e0e0;
             text-align: left;
@@ -228,7 +229,7 @@ $services = $pdo->query("
             display: inline-flex;
             align-items: center;
             padding: 0.7rem 1.2rem;
-            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            background: linear-gradient(135deg, var(--gradient-dark), var(--gradient-mid), var(--gradient-light));
             color: white;
             text-decoration: none;
             border-radius: 30px;
@@ -401,11 +402,11 @@ $services = $pdo->query("
                 width: 220px;
                 padding: 1rem;
             }
-            
+
             main {
                 padding: 1.5rem;
             }
-            
+
             .section {
                 padding: 1.2rem;
             }
@@ -446,7 +447,7 @@ $services = $pdo->query("
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
+
             .search-box {
                 width: 100%;
                 max-width: 100%;
@@ -457,35 +458,36 @@ $services = $pdo->query("
             header {
                 padding: 0.8rem 1rem;
             }
-            
+
             h1 {
                 font-size: 1.2rem;
             }
-            
+
             h2 {
                 font-size: 1.3rem;
             }
-            
+
             .btn {
                 padding: 0.6rem 1rem;
                 font-size: 0.8rem;
             }
-            
-            th, td {
+
+            th,
+            td {
                 padding: 0.8rem 0.6rem;
                 font-size: 0.9rem;
             }
-            
+
             .action-buttons {
                 flex-direction: column;
                 gap: 0.3rem;
             }
-            
+
             .action-btn {
                 padding: 5px 8px;
                 font-size: 0.75rem;
             }
-            
+
             .service-image {
                 max-width: 80px;
                 max-height: 50px;
@@ -506,6 +508,7 @@ $services = $pdo->query("
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -522,6 +525,7 @@ $services = $pdo->query("
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -615,7 +619,8 @@ $services = $pdo->query("
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="edit_service.php?id=<?= $service['id'] ?>" class="action-btn edit-btn">
+                                                <a href="edit_service.php?id=<?= $service['id'] ?>"
+                                                    class="action-btn edit-btn">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </a>
                                                 <a href="services.php?delete_service=<?= $service['id'] ?>&csrf_token=<?= $_SESSION['csrf_token'] ?>"
@@ -646,7 +651,7 @@ $services = $pdo->query("
             menuToggle.addEventListener('click', function (e) {
                 e.stopPropagation();
                 nav.classList.toggle('open');
-                
+
                 // Change icon
                 const icon = this.querySelector('i');
                 if (nav.classList.contains('open')) {
